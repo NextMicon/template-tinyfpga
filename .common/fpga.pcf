@@ -38,32 +38,32 @@
 ####
 
 # Left side of board
-set_io --warn-no-port fpga_pin1 A2
-set_io --warn-no-port fpga_pin2 A1
-set_io --warn-no-port fpga_pin3 B1
-set_io --warn-no-port fpga_pin4 C2
-set_io --warn-no-port fpga_pin5 C1
-set_io --warn-no-port fpga_pin6 D2
-set_io --warn-no-port fpga_pin7 D1
-set_io --warn-no-port fpga_pin8 E2
-set_io --warn-no-port fpga_pin9 E1
-set_io --warn-no-port fpga_pin10 G2
-set_io --warn-no-port fpga_pin11 H1
-set_io --warn-no-port fpga_pin12 J1
-set_io --warn-no-port fpga_pin13 H2
+set_io fpga_pin1 A2
+set_io fpga_pin2 A1
+set_io fpga_pin3 B1
+set_io fpga_pin4 C2
+set_io fpga_pin5 C1
+set_io fpga_pin6 D2
+set_io fpga_pin7 D1
+set_io fpga_pin8 E2
+set_io fpga_pin9 E1
+set_io fpga_pin10 G2
+set_io fpga_pin11 H1
+set_io fpga_pin12 J1
+set_io fpga_pin13 H2
 
 # Right side of board
-set_io --warn-no-port fpga_pin14 H9
-set_io --warn-no-port fpga_pin15 D9
-set_io --warn-no-port fpga_pin16 D8
-set_io --warn-no-port fpga_pin17 C9
-set_io --warn-no-port fpga_pin18 A9
-set_io --warn-no-port fpga_pin19 B8
-set_io --warn-no-port fpga_pin20 A8
-set_io --warn-no-port fpga_pin21 B7
-set_io --warn-no-port fpga_pin22 A7
-set_io --warn-no-port fpga_pin23 B6
-set_io --warn-no-port fpga_pin24 A6
+set_io fpga_pin14 H9
+set_io fpga_pin15 D9
+set_io fpga_pin16 D8
+set_io fpga_pin17 C9
+set_io fpga_pin18 A9
+set_io fpga_pin19 B8
+set_io fpga_pin20 A8
+set_io fpga_pin21 B7
+set_io fpga_pin22 A7
+set_io fpga_pin23 B6
+set_io fpga_pin24 A6
 
 # SPI flash interface on bottom of board
 set_io fpga_flash_csb F7
@@ -74,16 +74,16 @@ set_io fpga_flash_io2 H4
 set_io fpga_flash_io3 J8
 
 # General purpose pins on bottom of board
-set_io --warn-no-port fpga_pin25 G1
-set_io --warn-no-port fpga_pin26 J3
-set_io --warn-no-port fpga_pin27 J4
-set_io --warn-no-port fpga_pin28 G9
-set_io --warn-no-port fpga_pin29 J9
-set_io --warn-no-port fpga_pin30 E8
-set_io --warn-no-port fpga_pin31 J2
+set_io fpga_pin25 G1
+set_io fpga_pin26 J3
+set_io fpga_pin27 J4
+set_io fpga_pin28 G9
+set_io fpga_pin29 J9
+set_io fpga_pin30 E8
+set_io fpga_pin31 J2
 
 # LED
-set_io --warn-no-port fpga_user_led B3
+set_io fpga_user_led B3
 
 # USB
 set_io fpga_usb_pu A3

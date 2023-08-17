@@ -93,13 +93,13 @@ module hardware (
   ///////////////////////////////////
   // Modules
 
-  por #() por (
+  por por (
       .clk(clk),
       .resetn(resetn)
   );
 
   ram #(
-      .WORDS(2048)
+      .WORDS(MEM_WORDS)
   ) ram (
       .clk(clk),
       .resetn(resetn),
@@ -115,7 +115,7 @@ module hardware (
   wire ram_ready;
   wire [31:0] ram_rdata;
 
-  spirom #() rom (
+  spirom rom (
       .clk(clk),
       .resetn(resetn),
       .valid(rom_valid),

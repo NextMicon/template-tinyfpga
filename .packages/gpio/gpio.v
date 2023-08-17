@@ -20,6 +20,7 @@ module gpio (
       io_out   <= 0;
     end else begin
       ready <= valid;
+      (* full_case *)
       case (addr[3:2])
         2'b00: begin  // 0x...0
           rdata <= io_iosel;
