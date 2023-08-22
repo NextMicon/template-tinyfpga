@@ -7,6 +7,15 @@ SIMU_SOFT = .common/*.cpp .packages/*/*.cpp firmware/*.cpp simulation/*.cpp
 upload: hardware software
 	tinyprog -p hardware/.build/hardware.bin -u firmware/.build/firmware.bin
 
+gen: hardware/hardware.v firmware/firmware.hpp firmware/firmware.cpp
+	micon read -m micon.mcl
+hardware/hardware.v: micon.mcl
+	micon gen-hard -t $@ -m $^ -o $@
+firmware/firmware.hpp: micon.mcl
+	micon gen-firm -t $@ -m $^ -o $@
+firmware/firmware.cpp: micon.mcl
+	micon gen-firm -t $@ -m $^ -o $@
+
 hardware: .build/hardware.bin
 .build/hardware.json: $(HARDWARE)
 	yosys -ql $@.log -p 'synth_ice40 -top hardware -json $@' $^
@@ -54,4 +63,4 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 simu: .build/simulation.vcd .build/simu_software.objdump .build/simu_software.nm
 	gtkwave simulation/waveview.gtkw
 
-.PHONY: upload hardware software simu
+.PHONY: gen upload hardware software simu
