@@ -26,7 +26,7 @@ module testbench;
 
   parameter CYCLE = 30_0000;
   initial begin
-    $dumpfile("build/simulation.vcd");
+    $dumpfile(".build/simulation.vcd");
     $dumpvars(0, testbench);
     repeat (CYCLE) @(posedge clk);
     $finish;
@@ -46,11 +46,11 @@ module testbench;
 
   always @(posedge clk) begin
     cycle_cnt <= cycle_cnt + 1;
-    // irq_5 <= 0;
+    irq_5 <= 0;
 
-    // case (cycle_cnt)
-    //   10_0000: irq_5 <= 1;
-    // endcase
+    case (cycle_cnt)
+      10_0000: irq_5 <= 1;
+    endcase
 
   end
 
@@ -58,18 +58,18 @@ module testbench;
   // Main Module
 
   hardware hardware (
-      .clk(clk),
-      // .pin_11(irq_5),
+      .fpga_clk  (clk),
+      .fpga_pin11(irq_5),
 
-      .pin_1(serial_print),
-      .pin_2(serial_input),
+      .fpga_pin1(serial_print),
+      .fpga_pin2(serial_input),
 
-      .flash_csb(flash_csb),
-      .flash_clk(flash_clk),
-      .flash_io0(flash_io0),
-      .flash_io1(flash_io1),
-      .flash_io2(flash_io2),
-      .flash_io3(flash_io3)
+      .fpga_flash_csb(flash_csb),
+      .fpga_flash_clk(flash_clk),
+      .fpga_flash_io0(flash_io0),
+      .fpga_flash_io1(flash_io1),
+      .fpga_flash_io2(flash_io2),
+      .fpga_flash_io3(flash_io3)
   );
 
   /////////////////////////////////////

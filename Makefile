@@ -61,6 +61,6 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 	vvp $^ > .build/simulation.log
 	.common/simulation/serial.sh .build/simulation.log .build/simu_serial.log
 simu: .build/simulation.vcd .build/simu_software.objdump .build/simu_software.nm
-	gtkwave simulation/waveview.gtkw
+	gtkwave .build/simulation.vcd
 
 .PHONY: upload gen hardware software simu
