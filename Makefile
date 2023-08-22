@@ -40,7 +40,8 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 .build/simu_software.elf: .common/start.S $(SIMU_SOFT)
 	$(CROSS)g++ -march=rv32imc -mabi=ilp32 -nostartfiles \
 	        -Wl,-Bstatic,-T,.common/sections.lds,--strip-debug,-Map=.build/simu_software.map,--cref \
-			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -o $@ $^ -DSIMU
+			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -o $@ $^ \
+			-DSIMU
 .build/simu_software.objdump: .build/simu_software.elf
 	$(CROSS)objdump --demangle -D $^ > $@
 .build/simu_software.nm: .build/simu_software.elf
@@ -56,7 +57,8 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 .build/simu_testbench.vvp: .build/simu_flash.hex $(SIMU_HARD) $(HARDWARE)
 	iverilog -g2005-sv -s testbench -o $@ $(SIMU_HARD) $(HARDWARE) \
 	         `yosys-config --datdir/ice40/cells_sim.v` \
-			 -DNO_ICE40_DEFAULT_ASSIGNMENTS -DDEBUG -DDEBUGNETS -DDEBUGREGS
+			 -DNO_ICE40_DEFAULT_ASSIGNMENTS \
+			 -DDEBUG -DDEBUGNETS -DDEBUGREGS
 .build/simulation.vcd: .build/simu_testbench.vvp
 	vvp $^ > .build/simulation.log
 	.common/simulation/serial.sh .build/simulation.log .build/simu_serial.log
