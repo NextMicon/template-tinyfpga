@@ -15,7 +15,7 @@ module hardware (
 );
 
   /* iopin_assign */
-  assign fpga_pin1 = uart0_tx;
+  assign fpga_pin1 = uart_tx;
   /* end */
 
   ///////////////////////////////////
@@ -84,10 +84,10 @@ module hardware (
   wire [31:0] mem_wdata;
   wire [31:0] mem_rdata;
   assign mem_ready = |{ram_ready, rom_ready, rom_cfg_ready,  /* mem_ready */
-      uart0_ready, gpio0_ready
+      uart_ready, gpio_ready
       /* end */};
   assign mem_rdata = ram_ready ? ram_rdata : rom_ready ? rom_rdata : rom_cfg_ready ? rom_cfg_rdata /* mem_rdata */
-      : uart0_ready ? uart0_rdata : gpio0_ready ? gpio0_rdata
+      : uart_ready ? uart_rdata : gpio_ready ? gpio_rdata
       /* end */ : 32'b0;
 
   ///////////////////////////////////
@@ -191,49 +191,49 @@ module hardware (
   );
 
   /* instances */
-  uart uart0 (
+  uart uart (
       .clk(clk),
       .resetn(resetn),
-      .valid(uart0_valid),
-      .ready(uart0_ready),
-      .wstrb(uart0_valid ? mem_wstrb : 4'b0),
+      .valid(uart_valid),
+      .ready(uart_ready),
+      .wstrb(uart_valid ? mem_wstrb : 4'b0),
       .addr(mem_addr),
       .wdata(mem_wdata),
-      .rdata(uart0_rdata),
+      .rdata(uart_rdata),
       .rx(fpga_pin2),
-      .tx(uart0_tx)
+      .tx(uart_tx)
   );
-  wire uart0_sel = mem_addr[31:24] == 8'h03;
-  wire uart0_valid = mem_valid && uart0_sel;
-  wire uart0_ready;
-  wire [31:0] uart0_rdata;
-  wire uart0_tx;
+  wire uart_sel = mem_addr[31:24] == 8'h03;
+  wire uart_valid = mem_valid && uart_sel;
+  wire uart_ready;
+  wire [31:0] uart_rdata;
+  wire uart_tx;
 
-  gpio gpio0 (
+  gpio gpio (
       .clk(clk),
       .resetn(resetn),
-      .valid(gpio0_valid),
-      .ready(gpio0_ready),
-      .wstrb(gpio0_valid ? mem_wstrb : 4'b0),
+      .valid(gpio_valid),
+      .ready(gpio_ready),
+      .wstrb(gpio_valid ? mem_wstrb : 4'b0),
       .addr (mem_addr),
       .wdata(mem_wdata),
-      .rdata(gpio0_rdata),
-      .io_iosel(gpio0_io_iosel),
-      .io_in   (gpio0_io_in),
-      .io_out  (gpio0_io_out)
+      .rdata(gpio_rdata),
+      .io_iosel(gpio_io_iosel),
+      .io_in   (gpio_io_in),
+      .io_out  (gpio_io_out)
   );
-  wire gpio0_sel = mem_addr[31:24] == 8'h04;
-  wire gpio0_valid = mem_valid && gpio0_sel;
-  wire gpio0_ready;
-  wire [31:0] gpio0_rdata;
-  wire gpio0_io_iosel;
-  wire gpio0_io_in;
-  wire gpio0_io_out;
-  tristate gpio0_io_iobuf (
+  wire gpio_sel = mem_addr[31:24] == 8'h04;
+  wire gpio_valid = mem_valid && gpio_sel;
+  wire gpio_ready;
+  wire [31:0] gpio_rdata;
+  wire gpio_io_iosel;
+  wire gpio_io_in;
+  wire gpio_io_out;
+  tristate gpio_io_iobuf (
       .pin  (fpga_user_led),
-      .iosel(gpio0_io_iosel),
-      .in   (gpio0_io_in),
-      .out  (gpio0_io_out)
+      .iosel(gpio_io_iosel),
+      .in   (gpio_io_in),
+      .out  (gpio_io_out)
   );
   /* end */
 
