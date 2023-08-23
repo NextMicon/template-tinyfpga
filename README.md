@@ -1,6 +1,6 @@
 # template-tinyfpga
 
-## [GPIO](.packages/gpio/)
+## [gpio](.packages/gpio/)
 
 ![](.packages/gpio/img/gpio.dio.svg)
 
@@ -10,13 +10,13 @@
 - `uint32_t read()`
 - `void write(uint32_t)`
 
-## [PWM](.packages/pwm/)
+## [pwm](.packages/pwm/)
 
 ![](.packages/pwm/img/pwm.dio.svg)
 
 - `void duty(uint32_t)`
 
-## [UART](.packages/uart/)
+## [uart](.packages/uart/)
 
 ![](.packages/uart/img/uart.dio.svg)
 
@@ -24,25 +24,25 @@
 
 ### PWM
 
-## [RAM](.packages/ram/)
+## [ram](.packages/ram/)
 
-## [SPI ROM](.packages/spirom/)
+## [spirom](.packages/spirom/)
 
 ### ROM_CFG
 
 - `void dual_io()`
 
-## [Random](.packages/random/)
+## [random](.packages/random/)
 
 32bit LFSR : 32,22,2,1
 
 参考：http://zakii.la.coocan.jp/signal/41_lfsr.htm
 
-## [Counter](.packages/counter/)
+## [counter](.packages/counter/)
 
-## [Oscilator](.packages/oscilator/)
+## [oscilator](.packages/oscilator/)
 
-## [Mixier](.packages/mixier/)
+## [mixier](.packages/mixier/)
 
 ![](.packages/mixier/img/mixier.dio.svg)
 
@@ -53,4 +53,4 @@
 
 - `void set_vol(uint32_t ch, uint32_t vol)`
 
-## [SPI DAC](.packages/spidac/)
+## [spidac](.packages/spidac/)
