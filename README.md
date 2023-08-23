@@ -1,4 +1,15 @@
-# template-tinyfpga
+# template-tinyfpga <!-- omit in toc -->
+
+- [gpio](#gpio)
+- [pwm](#pwm)
+- [uart](#uart)
+- [ram](#ram)
+- [spirom](#spirom)
+- [random](#random)
+- [counter](#counter)
+- [oscilator](#oscilator)
+- [mixier](#mixier)
+- [spidac](#spidac)
 
 ## [gpio](.packages/gpio/)
 
@@ -20,15 +31,15 @@
 
 ![](.packages/uart/img/uart.dio.svg)
 
-### MIDI
+**`Serial`**
 
-### PWM
+**`MIDI`**
 
 ## [ram](.packages/ram/)
 
 ## [spirom](.packages/spirom/)
 
-### ROM_CFG
+**`ROM_CFG`**
 
 - `void dual_io()`
 
@@ -49,7 +60,7 @@
 8bit 入力をシフトして加算します．
 出力は上位 12 ビットを見ます．
 
-### `Mixier`
+**`Mixier`**
 
 - `void set_vol(uint32_t ch, uint32_t vol)`
 
