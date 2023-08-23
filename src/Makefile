@@ -26,7 +26,7 @@ hardware: .build/hardware.bin
 	icepack $^ $@
 
 software: .build/software.objdump .build/software.nm .build/software.bin
-.build/software.elf: .common/start.S $(SOFTWARE)
+.build/software.elf: .common/start.S $(SOFTWARE) firmware/firmware.hpp
 	$(CROSS)g++ -march=rv32imc -mabi=ilp32 -nostartfiles \
 	        -Wl,-Bstatic,-T,.common/sections.lds,--strip-debug,-Map=.build/software.map,--cref \
 			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -o $@ $^
@@ -37,7 +37,7 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 .build/software.bin: .build/software.elf
 	$(CROSS)objcopy -O binary $^ /dev/stdout > $@
 
-.build/simu_software.elf: .common/start.S $(SIMU_SOFT)
+.build/simu_software.elf: .common/start.S $(SIMU_SOFT) firmware/firmware.hpp
 	$(CROSS)g++ -march=rv32imc -mabi=ilp32 -nostartfiles \
 	        -Wl,-Bstatic,-T,.common/sections.lds,--strip-debug,-Map=.build/simu_software.map,--cref \
 			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -o $@ $^ \
