@@ -1,5 +1,4 @@
 #include "firmware.hpp"
-#include "test_class/test_class.hpp"
 
 void init() {
   gpio_blink(gpio);
