@@ -1,3 +1,6 @@
+uart := "https://example.com/uart";
+gpio := "https://example.com/gpio";
+
 uart = uart(uart,UART);
 uart.tx => fpga.pin1;
 uart.rx <= fpga.pin2;
