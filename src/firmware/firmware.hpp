@@ -1,5 +1,5 @@
+#include "ROM_CFG.hpp"
 #include "cpu.hpp"
-#include "spirom/ROM_CFG.hpp"
 /* includes */
 #include "gpio/GPIO.hpp"
 #include "uart/UART.hpp"
