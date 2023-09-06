@@ -1,5 +1,5 @@
-uart := "https://raw.githubusercontent.com/Next-MICON/uart/main/uart.json";
-gpio := "https://raw.githubusercontent.com/Next-MICON/gpio/main/gpio.json";
+uart := "https://raw.githubusercontent.com/Next-MICON/packages/main/uart/uart.json";
+gpio := "https://raw.githubusercontent.com/Next-MICON/packages/main/gpio/gpio.json";
 
 uart = uart(uart,UART);
 uart.tx => fpga.pin1;
