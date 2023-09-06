@@ -7,6 +7,9 @@ SIMU_SOFT = .common/*.cpp .packages/*/*.cpp firmware/*.cpp simulation/*.cpp
 upload: hardware software
 	tinyprog -p .build/hardware.bin -u .build/software.bin
 
+install:
+	micon download -m micon.mcl
+
 gen: hardware/hardware.v firmware/firmware.hpp firmware/firmware.cpp
 	micon read -m micon.mcl
 hardware/hardware.v: micon.mcl
@@ -65,4 +68,4 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 simu: .build/simulation.vcd .build/simu_software.objdump .build/simu_software.nm
 	gtkwave .build/simulation.vcd
 
-.PHONY: upload gen hardware software simu
+.PHONY: upload install gen hardware software simu
