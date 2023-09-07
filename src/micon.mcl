@@ -1,3 +1,6 @@
+cpu := "https://raw.githubusercontent.com/Next-MICON/packages/main/cpu/cpu.json";
+fpga := "https://raw.githubusercontent.com/Next-MICON/packages/main/fpga/fpga.json";
+spirom := "https://raw.githubusercontent.com/Next-MICON/packages/main/spirom/spirom.json";
 uart := "https://raw.githubusercontent.com/Next-MICON/packages/main/uart/uart.json";
 gpio := "https://raw.githubusercontent.com/Next-MICON/packages/main/gpio/gpio.json";
 

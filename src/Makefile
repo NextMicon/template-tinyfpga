@@ -1,8 +1,11 @@
 CROSS = riscv64-unknown-elf-
-SOFTWARE  = .common/*.cpp .packages/*/*.cpp firmware/*.cpp software/*.cpp
-HARDWARE  = .common/*.v   .packages/*/*.v   hardware/hardware.v 
-SIMU_HARD = .common/simulation/*.v simulation/*.v
-SIMU_SOFT = .common/*.cpp .packages/*/*.cpp firmware/*.cpp simulation/*.cpp
+SOFTWARE  = .packages/*/*.cpp firmware/*.cpp software/*.cpp
+HARDWARE  = .packages/*/*.v   hardware/hardware.v 
+SIMU_HARD = simulation/*.v
+SIMU_SOFT = .packages/*/*.cpp firmware/*.cpp simulation/*.cpp
+PCF = .packages/fpga/*.pcf
+START = .packages/cpu/start.S
+LDS = .packages/cpu/sections.lds
 
 upload: hardware software
 	tinyprog -p .build/hardware.bin -u .build/software.bin
@@ -23,16 +26,16 @@ hardware: .build/hardware.bin
 .build/hardware.json: $(HARDWARE)
 	yosys -ql $@.log -p 'synth_ice40 -top hardware -json $@' $^
 .build/hardware.asc: .build/hardware.json
-	nextpnr-ice40 -ql $@.log --lp8k --package cm81 --asc $@ --pcf .common/fpga.pcf --json $^
+	nextpnr-ice40 -ql $@.log --lp8k --package cm81 --asc $@ --pcf $(PCF) --json $^
 .build/hardware.bin: .build/hardware.asc
 	icetime -d lp8k -c 12 -mtr .build/hardware.rpt $^
 	icepack $^ $@
 
 software: .build/software.objdump .build/software.nm .build/software.bin
-.build/software.elf: .common/start.S $(SOFTWARE) firmware/firmware.hpp
+.build/software.elf: $(START) $(SOFTWARE) firmware/firmware.hpp
 	$(CROSS)g++ -march=rv32imc -mabi=ilp32 -nostartfiles \
-	        -Wl,-Bstatic,-T,.common/sections.lds,--strip-debug,-Map=.build/software.map,--cref \
-			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -o $@ $^
+	        -Wl,-Bstatic,-T,$(LDS),--strip-debug,-Map=.build/software.map,--cref \
+			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -I .packages/cpu -o $@ $^
 .build/software.objdump: .build/software.elf
 	$(CROSS)objdump --demangle -D $^ > $@
 .build/software.nm: .build/software.elf
