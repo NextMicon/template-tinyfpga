@@ -11,7 +11,7 @@ upload: hardware software
 	tinyprog -p .build/hardware.bin -u .build/software.bin
 
 install:
-	micon download -m micon.mcl
+	micon install -m micon.mcl
 
 gen: hardware/hardware.v firmware/firmware.hpp firmware/firmware.cpp
 	micon read -m micon.mcl
