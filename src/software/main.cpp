@@ -15,13 +15,7 @@ void init() {
 }
 
 void loop() {
-  uart << "Select Action:\n"
-          " [\\n] Blink LED\n";
-  char cmd = uart.read();
-  if(cmd == '\n') {
-    uart << "Blink LED\n";
-    gpio_blink(gpio);
-  }
+  gpio_blink(gpio);
 }
 
 uint32_t* irq(uint32_t* regs, uint32_t irqs) {
