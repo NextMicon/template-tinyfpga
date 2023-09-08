@@ -1,4 +1,4 @@
-#include "cpu/cpu.hpp"
+#include "cpu.hpp"
 #include "spirom/ROM_CFG.hpp"
 /* includes */
 #include "gpio/GPIO.hpp"

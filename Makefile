@@ -1,11 +1,11 @@
-CROSS = riscv64-unknown-elf-
-SOFTWARE  = .packages/*/*.cpp firmware/*.cpp software/*.cpp
-HARDWARE  = .packages/*/*.v   hardware/hardware.v 
-SIMU_HARD = simulation/*.v
-SIMU_SOFT = .packages/*/*.cpp firmware/*.cpp simulation/*.cpp
-PCF = .packages/fpga/*.pcf
-START = .packages/cpu/start.S
-LDS = .packages/cpu/sections.lds
+CROSS     = riscv64-unknown-elf-
+SOFTWARE  = .template/cpu/*.cpp .packages/*/*.cpp micon/*.cpp software/*.cpp
+HARDWARE  = .template/fpga/*.v .template/cpu/*.v .packages/*/*.v micon/*.v
+SIMU_HARD = .template/simulation/*.v
+SIMU_SOFT = .template/cpu/*.cpp .packages/*/*.cpp micon/*.cpp simulation/*.cpp
+PCF       = .template/fpga/*.pcf
+START     = .template/cpu/start.S
+LINKER    = .template/cpu/sections.lds
 
 upload: hardware software
 	tinyprog -p .build/hardware.bin -u .build/software.bin
@@ -13,13 +13,13 @@ upload: hardware software
 install:
 	micon install -m micon.mcl
 
-gen: hardware/hardware.v firmware/firmware.hpp firmware/firmware.cpp
+gen: micon/hardware.v micon/firmware.hpp micon/firmware.cpp
 	micon read -m micon.mcl
-hardware/hardware.v: micon.mcl
+micon/hardware.v: micon.mcl
 	micon gen-hard -t $@ -m $^ -o $@
-firmware/firmware.hpp: micon.mcl
+micon/firmware.hpp: micon.mcl
 	micon gen-firm -t $@ -m $^ -o $@
-firmware/firmware.cpp: micon.mcl
+micon/firmware.cpp: micon.mcl
 	micon gen-firm -t $@ -m $^ -o $@
 
 hardware: .build/hardware.bin
@@ -32,10 +32,10 @@ hardware: .build/hardware.bin
 	icepack $^ $@
 
 software: .build/software.objdump .build/software.nm .build/software.bin
-.build/software.elf: $(START) $(SOFTWARE) firmware/firmware.hpp
+.build/software.elf: $(START) $(SOFTWARE)
 	$(CROSS)g++ -march=rv32imc -mabi=ilp32 -nostartfiles \
-	        -Wl,-Bstatic,-T,$(LDS),--strip-debug,-Map=.build/software.map,--cref \
-			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -I .packages/cpu -o $@ $^
+	        -Wl,-Bstatic,-T,$(LINKER),--strip-debug,-Map=.build/software.map,--cref \
+			-O3 -ffreestanding -nostdlib -I .template/cpu -I .packages -I micon -o $@ $^
 .build/software.objdump: .build/software.elf
 	$(CROSS)objdump --demangle -D $^ > $@
 .build/software.nm: .build/software.elf
@@ -43,10 +43,10 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 .build/software.bin: .build/software.elf
 	$(CROSS)objcopy -O binary $^ /dev/stdout > $@
 
-.build/simu_software.elf: .common/start.S $(SIMU_SOFT) firmware/firmware.hpp
+.build/simu_software.elf: $(START) $(SIMU_SOFT)
 	$(CROSS)g++ -march=rv32imc -mabi=ilp32 -nostartfiles \
-	        -Wl,-Bstatic,-T,.common/sections.lds,--strip-debug,-Map=.build/simu_software.map,--cref \
-			-O3 -ffreestanding -nostdlib -I .common -I firmware -I .packages -o $@ $^ \
+	        -Wl,-Bstatic,-T,$(LINKER),--strip-debug,-Map=.build/simu_software.map,--cref \
+			-O3 -ffreestanding -nostdlib -I .template/cpu -I .packages -I micon -o $@ $^ \
 			-DSIMU
 .build/simu_software.objdump: .build/simu_software.elf
 	$(CROSS)objdump --demangle -D $^ > $@
@@ -54,10 +54,10 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 	$(CROSS)nm --demangle --numeric-sort $^ > $@
 .build/simu_software.bin: .build/simu_software.elf
 	$(CROSS)objcopy -O binary $^ $@
-.build/simu_software.hex: simu_.build/software.bin
+.build/simu_software.hex: .build/simu_software.bin
 	xxd $^ > $@
 .build/simu_flash.bin: .build/simu_software.bin
-	.common/simulation/zeropadding.sh $^ > $@
+	.template/simulation/zeropadding.sh $^ > $@
 .build/simu_flash.hex: .build/simu_flash.bin
 	xxd -c 1 -p $^ > $@
 .build/simu_testbench.vvp: .build/simu_flash.hex $(SIMU_HARD) $(HARDWARE)
@@ -67,7 +67,7 @@ software: .build/software.objdump .build/software.nm .build/software.bin
 			 -DDEBUG -DDEBUGNETS -DDEBUGREGS
 .build/simulation.vcd: .build/simu_testbench.vvp
 	vvp $^ > .build/simulation.log
-	.common/simulation/serial.sh .build/simulation.log .build/simu_serial.log
+	.template/simulation/serial.sh .build/simulation.log .build/simu_serial.log
 simu: .build/simulation.vcd .build/simu_software.objdump .build/simu_software.nm
 	gtkwave .build/simulation.vcd
 
